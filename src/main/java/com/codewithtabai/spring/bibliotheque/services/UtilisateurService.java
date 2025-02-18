@@ -1,6 +1,7 @@
 package com.codewithtabai.spring.bibliotheque.services;
 
 import com.codewithtabai.spring.bibliotheque.dto.AuthenticationResponse;
+import com.codewithtabai.spring.bibliotheque.dto.ChangePasswordRequest;
 import com.codewithtabai.spring.bibliotheque.entities.Utilisateur;
 import com.codewithtabai.spring.bibliotheque.repositories.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,6 +144,28 @@ public class UtilisateurService {
         // Si passwordChanged est false, cela signifie que l'utilisateur utilise le mot de passe par défaut
         boolean mustChangePassword = (user.getPasswordChanged() == null || !user.getPasswordChanged());
         return new AuthenticationResponse(user, mustChangePassword);
+    }
+    
+ // Méthode pour changer le mot de passe
+    public Utilisateur changePassword(Long userId, ChangePasswordRequest request) {
+        Optional<Utilisateur> opt = utilisateurRepository.findById(userId);
+        if (opt.isEmpty()) {
+            throw new RuntimeException("Utilisateur non trouvé");
+        }
+        Utilisateur user = opt.get();
+        // Vérifier l'ancien mot de passe
+        if (!BCrypt.checkpw(request.getOldPassword(), user.getPassword())) {
+            throw new RuntimeException("Ancien mot de passe incorrect");
+        }
+        // Vérifier que le nouveau mot de passe et la confirmation correspondent
+        if (!request.getNewPassword().equals(request.getConfirmNewPassword())) {
+            throw new RuntimeException("Le nouveau mot de passe et sa confirmation ne correspondent pas");
+        }
+        // Hacher le nouveau mot de passe
+        String newHash = BCrypt.hashpw(request.getNewPassword(), BCrypt.gensalt());
+        user.setPassword(newHash);
+        user.setPasswordChanged(true);
+        return utilisateurRepository.save(user);
     }
     
     

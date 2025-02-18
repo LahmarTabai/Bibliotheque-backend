@@ -4,6 +4,7 @@ package com.codewithtabai.spring.bibliotheque.controllers;
 
 import com.codewithtabai.spring.bibliotheque.dto.AuthRequest;
 import com.codewithtabai.spring.bibliotheque.dto.AuthenticationResponse;
+import com.codewithtabai.spring.bibliotheque.dto.ChangePasswordRequest;
 import com.codewithtabai.spring.bibliotheque.entities.Utilisateur;
 import com.codewithtabai.spring.bibliotheque.services.UtilisateurService;
 
@@ -61,9 +62,15 @@ public class UtilisateurController {
         return utilisateurService.getUtilisateurByEmail(email);
     }
     
- // Endpoint pour l'authentification
+    // Endpoint pour l'authentification
     @PostMapping("/authentifier")
     public AuthenticationResponse authentifier(@RequestBody AuthRequest authRequest) {
         return utilisateurService.authentifier(authRequest.getEmail(), authRequest.getMotDePasse());
+    }
+    
+    // Endpoint pour changer le mot de passe
+    @PostMapping("/{id}/changePassword")
+    public Utilisateur changePassword(@PathVariable("id") Long userId, @RequestBody ChangePasswordRequest request) {
+        return utilisateurService.changePassword(userId, request);
     }
 }
