@@ -19,7 +19,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable()) // Désactive CSRF pour simplifier (à adapter en production)
             .authorizeHttpRequests(authz -> authz
                 // Permettre l'accès public à l'authentification
-                .requestMatchers("/api/utilisateurs/authentifier", "/api/utilisateurs/*/changePassword").permitAll()
+                .requestMatchers("/api/utilisateurs/authentifier").permitAll()
                 // Par exemple, restreindre les autres endpoints des utilisateurs aux ADMIN
                 .requestMatchers("/api/utilisateurs/**").hasRole("ADMIN")
                 // Autoriser l'accès aux autres endpoints (à ajuster selon tes besoins)
