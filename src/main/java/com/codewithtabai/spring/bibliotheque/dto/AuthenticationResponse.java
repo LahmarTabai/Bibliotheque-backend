@@ -5,10 +5,17 @@ import com.codewithtabai.spring.bibliotheque.entities.Utilisateur;
 public class AuthenticationResponse {
     private Utilisateur utilisateur;
     private boolean mustChangePassword;
+    private String token; // nouveau
 
     public AuthenticationResponse(Utilisateur utilisateur, boolean mustChangePassword) {
         this.utilisateur = utilisateur;
         this.mustChangePassword = mustChangePassword;
+    }
+
+    public AuthenticationResponse(Utilisateur utilisateur, boolean mustChangePassword, String token) {
+        this.utilisateur = utilisateur;
+        this.mustChangePassword = mustChangePassword;
+        this.token = token;
     }
 
     // Getters & Setters
@@ -27,4 +34,7 @@ public class AuthenticationResponse {
     public void setMustChangePassword(boolean mustChangePassword) {
         this.mustChangePassword = mustChangePassword;
     }
+    
+    public String getToken() { return token; }
+    public void setToken(String token) { this.token = token; }
 }

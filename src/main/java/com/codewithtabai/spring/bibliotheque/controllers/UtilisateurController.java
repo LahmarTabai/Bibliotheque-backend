@@ -36,6 +36,13 @@ public class UtilisateurController {
     public Utilisateur getUtilisateurById(@PathVariable("id") Long id) {
         return utilisateurService.getUtilisateurById(id);
     }
+    
+    // GET /api/utilisateurs/search?term=XXX
+    @GetMapping("/search")
+    public List<Utilisateur> searchUsers(@RequestParam("term") String term) {
+        return utilisateurService.rechercheParNomOuPrenom(term);
+    }
+
 
     // POST /api/utilisateurs
     @PostMapping

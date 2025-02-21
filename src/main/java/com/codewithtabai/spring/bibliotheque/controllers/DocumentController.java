@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/documents")
-@CrossOrigin(origins = "http://localhost:4200") // autorise les requêtes depuis n'importe quel domaine (pour Angular)
+@CrossOrigin(origins = "http://localhost:4200")  // autorise les requêtes depuis n'importe quel domaine (pour Angular)
 public class DocumentController {
 
     @Autowired
@@ -31,6 +31,12 @@ public class DocumentController {
     public Document getDocumentById(@PathVariable("id") Long docId) {
         return documentService.getDocumentById(docId);
     }
+    
+    @GetMapping("/disponibles")
+    public List<Document> getDocumentsDisponibles() {
+        return documentService.getDocumentsDisponibles();
+    }
+
 
     // POST /api/documents
     @PostMapping

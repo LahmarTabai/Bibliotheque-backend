@@ -4,6 +4,8 @@ import com.codewithtabai.spring.bibliotheque.dto.AuthenticationResponse;
 import com.codewithtabai.spring.bibliotheque.dto.ChangePasswordRequest;
 import com.codewithtabai.spring.bibliotheque.entities.Utilisateur;
 import com.codewithtabai.spring.bibliotheque.repositories.UtilisateurRepository;
+import com.codewithtabai.spring.bibliotheque.utils.JwtUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,9 @@ public class UtilisateurService {
 
     @Autowired
     private UtilisateurRepository utilisateurRepository;
+    
+    @Autowired
+    private JwtUtils jwtUtils; 
 
     /**
      * Crée un nouvel utilisateur en hachant systématiquement son mot de passe.
@@ -112,6 +117,12 @@ public class UtilisateurService {
     public Utilisateur getUtilisateurById(Long userId) {
         return utilisateurRepository.findById(userId).orElse(null);
     }
+    
+    public List<Utilisateur> rechercheParNomOuPrenom(String term) {
+        // On appelle la méthode du repository
+        return utilisateurRepository.findByUserNomContainingIgnoreCaseOrUserPrenomContainingIgnoreCase(term, term);
+    }
+
 
     /**
      * Récupérer la liste de tous les utilisateurs.
@@ -127,10 +138,6 @@ public class UtilisateurService {
         return utilisateurRepository.findByUserEmail(email);
     }
     
-    /**
-     * Authentifie un utilisateur en vérifiant le mot de passe.
-     * Si l'utilisateur utilise le mot de passe par défaut, le flag mustChangePassword sera true.
-     */
     public AuthenticationResponse authentifier(String email, String motDePasseClair) {
         Utilisateur user = utilisateurRepository.findByUserEmail(email);
         if (user == null) {
@@ -143,8 +150,15 @@ public class UtilisateurService {
         }
         // Si passwordChanged est false, cela signifie que l'utilisateur utilise le mot de passe par défaut
         boolean mustChangePassword = (user.getPasswordChanged() == null || !user.getPasswordChanged());
-        return new AuthenticationResponse(user, mustChangePassword);
+
+        // GÉNÉRER LE TOKEN
+        // On suppose que tu as un champ "role" dans l'entité Utilisateur (ex: user.getRole())
+        String token = jwtUtils.generateToken(user.getUserEmail(), user.getRole());
+        
+        // On retourne la réponse contenant l'utilisateur, mustChangePassword et maintenant le token
+        return new AuthenticationResponse(user, mustChangePassword, token);
     }
+
     
  // Méthode pour changer le mot de passe
     public Utilisateur changePassword(Long userId, ChangePasswordRequest request) {

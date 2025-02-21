@@ -30,6 +30,18 @@ public class EmpruntController {
     public Emprunt getEmpruntById(@PathVariable("id") Long id) {
         return empruntService.getEmpruntById(id);
     }
+    
+    @GetMapping("/actifs")
+    public List<Emprunt> getEmpruntsActifs() {
+        return empruntService.getEmpruntsActifs();
+    }
+    
+    @GetMapping("/clotures")
+    public List<Emprunt> getEmpruntsClotures() {
+        return empruntService.getEmpruntsClotures();
+    }
+
+
 
     // POST /api/emprunts/emprunter
     @PostMapping("/emprunter")

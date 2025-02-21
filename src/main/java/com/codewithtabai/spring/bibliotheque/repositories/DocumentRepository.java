@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.query.Param;
 
 import com.codewithtabai.spring.bibliotheque.entities.Document;
+import com.codewithtabai.spring.bibliotheque.entities.Utilisateur;
 
 import java.util.List;
 
@@ -32,6 +33,9 @@ public interface DocumentRepository extends JpaRepository<Document, Long>, JpaSp
     default List<Document> getAllDocuments() {
         return findAll();
     }
+    
+    List<Document> findByDocQuantiteDispoGreaterThan(Long value);
+
 
     // --- Quelques méthodes de recherche utiles (exemples) ---
     // Recherche par titre contenant un mot-clé
@@ -60,6 +64,9 @@ public interface DocumentRepository extends JpaRepository<Document, Long>, JpaSp
            "   SELECT e.docId FROM Emprunt e WHERE e.userId = :userId" +
            ")")
     List<Document> findRecommendationsForUser(@Param("userId") Long userId);
+    
+    
+   
 
 
 }

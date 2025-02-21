@@ -98,6 +98,17 @@ public class EmpruntService {
     public List<Emprunt> getAllEmprunts() {
         return empruntRepository.findAll();
     }
+    
+    public List<Emprunt> getEmpruntsActifs() {
+        return empruntRepository.findByStatus("Actif");
+    }
+    
+    public List<Emprunt> getEmpruntsClotures() {
+        // "Cloturee" : c'est la valeur que tu mets quand tu retournes le document.
+        return empruntRepository.findByStatus("Cloturee");
+    }
+
+
 
     public Emprunt modifierEmprunt(Emprunt e) {
         // Parfois, on ne souhaite pas qu'un emprunt soit modifié directement,

@@ -31,6 +31,10 @@ public interface EmpruntRepository extends JpaRepository<Emprunt, Long> {
     default List<Emprunt> getAllEmprunts() {
         return findAll();
     }
+    
+    // On utilise la convenance Spring Data
+    List<Emprunt> findByStatus(String status);
+
 
     // Possibles recherches par userId, docId, etc.
     List<Emprunt> findByUserId(Long userId);

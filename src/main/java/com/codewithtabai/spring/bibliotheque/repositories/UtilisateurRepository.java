@@ -35,5 +35,8 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> 
     
  // Dans UtilisateurRepository
     Utilisateur findByUserEmailAndPassword(String userEmail, String password);
+    
+    List<Utilisateur> findByUserNomContainingIgnoreCaseOrUserPrenomContainingIgnoreCase(String nom, String prenom);
+
 
 }

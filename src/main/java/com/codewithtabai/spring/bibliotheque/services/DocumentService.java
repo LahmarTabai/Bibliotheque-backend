@@ -24,10 +24,12 @@ public class DocumentService {
      * Ajouter un nouveau document
      */
     public Document ajouterDocument(Document doc) {
-        // Exemple de règle de gestion éventuelle :
-        // if (doc.getDocQuantiteDispo() > doc.getDocQuantite()) { ... }
+        if (doc.getDocQuantiteDispo() == null) {
+            doc.setDocQuantiteDispo(doc.getDocQuantite());
+        }
         return documentRepository.save(doc);
     }
+
 
     /**
      * Modifier un document existant
@@ -116,6 +118,11 @@ public class DocumentService {
     public List<Document> getRecommendationsForUser(Long userId) {
         return documentRepository.findRecommendationsForUser(userId);
     }
+    
+    public List<Document> getDocumentsDisponibles() {
+        return documentRepository.findByDocQuantiteDispoGreaterThan(0L);
+    }
+
 
 
     
