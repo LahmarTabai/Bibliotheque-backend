@@ -66,6 +66,8 @@ public interface DocumentRepository extends JpaRepository<Document, Long>, JpaSp
     List<Document> findRecommendationsForUser(@Param("userId") Long userId);
     
     
+    
+    
    
 
 

@@ -86,4 +86,7 @@ public class EmpruntController {
     public List<DocumentTypeStats> getDocTypeEmpruntStats() {
         return empruntService.getEmpruntsStatsByDocType();
     }
+    
+
+
 }

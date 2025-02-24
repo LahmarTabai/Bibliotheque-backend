@@ -41,15 +41,27 @@ public class SecurityConfig {
                 
              // Autoriser GET sur /api/documents si tu veux que tout le monde puisse les voir
                 .requestMatchers(HttpMethod.GET, "/api/documents").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/documents/recommendations").hasRole("USER")
+
+
                 // En revanche, POST/PUT/DELETE sur /api/documents => ADMIN
                 .requestMatchers(HttpMethod.POST, "/api/documents").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/documents/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/documents/**").hasRole("ADMIN")
                 
-                .requestMatchers(HttpMethod.GET, "/api/emprunts/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/api/emprunts/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/api/emprunts/**").hasRole("ADMIN")
+                // Emprunts :
+                // GET/POST/PUT => hasRole("USER") ou hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/emprunts/**").hasAnyRole("ADMIN","USER")
+                .requestMatchers(HttpMethod.POST, "/api/emprunts/**").hasAnyRole("ADMIN","USER")
+                .requestMatchers(HttpMethod.PUT, "/api/emprunts/**").hasAnyRole("ADMIN","USER")
                 .requestMatchers(HttpMethod.DELETE, "/api/emprunts/**").hasRole("ADMIN")
+                
+               
+                
+                
+                
+                
+                
 
                 // Autoriser d'autres endpoints publics si besoin (livres ?)
                 .requestMatchers(HttpMethod.GET, "/api/livres", "/api/magazines").permitAll()

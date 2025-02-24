@@ -34,6 +34,16 @@ public class EmpruntService {
      * Créer un nouvel emprunt (emprunter un document)
      */
     public Emprunt emprunterDocument(Emprunt emprunt) {
+        // -- Vérifier si l'utilisateur a déjà un emprunt actif pour ce doc
+        List<Emprunt> deja = empruntRepository.findByUserIdAndDocIdAndStatus(
+                emprunt.getUserId(), 
+                emprunt.getDocId(), 
+                "Actif"
+        );
+        if (!deja.isEmpty()) {
+            throw new RuntimeException("Vous avez déjà emprunté ce document et il est toujours actif !");
+        }
+
         // 1. Vérifier si le document existe et est dispo
         Document doc = documentService.getDocumentById(emprunt.getDocId());
         if (doc == null) {
@@ -46,9 +56,12 @@ public class EmpruntService {
         // 2. Décrémenter la quantité disponible
         documentService.decrementerQuantiteDispo(doc.getDocId());
 
-        // 3. Définir la date d'emprunt si besoin
+        // 3. Définir la date d'emprunt et le status si besoin
         if (emprunt.getDateEmprunt() == null) {
             emprunt.setDateEmprunt(LocalDateTime.now());
+        }
+        if (emprunt.getStatus() == null) {
+            emprunt.setStatus("Actif");
         }
 
         // 4. Sauvegarder l'emprunt
@@ -56,6 +69,7 @@ public class EmpruntService {
 
         return nouveau;
     }
+
 
     /**
      * Retourner un document (clôturer l'emprunt)
@@ -142,5 +156,12 @@ public class EmpruntService {
     public List<DocumentTypeStats> getEmpruntsStatsByDocType() {
         return empruntRepository.countEmpruntsByDocType();
     }
+    
+    public List<Emprunt> getEmpruntsActifsParUser(Long userId) {
+        return empruntRepository.findByUserIdAndStatus(userId, "Actif");
+    }
+
+    
+    
 
 }

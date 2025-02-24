@@ -55,4 +55,12 @@ public interface EmpruntRepository extends JpaRepository<Emprunt, Long> {
            "GROUP BY d.docType " +
            "ORDER BY COUNT(e) DESC")
     List<DocumentTypeStats> countEmpruntsByDocType();
+    
+    List<Emprunt> findByUserIdAndDocIdAndStatus(Long userId, Long docId, String status);
+    
+    List<Emprunt> findByUserIdAndStatus(Long userId, String status);
+    
+
+
+
 }
