@@ -3,6 +3,7 @@ package com.codewithtabai.spring.bibliotheque.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.codewithtabai.spring.bibliotheque.dto.DocumentTypeStats;
 import com.codewithtabai.spring.bibliotheque.dto.UserEmpruntStats;
@@ -59,6 +60,17 @@ public interface EmpruntRepository extends JpaRepository<Emprunt, Long> {
     List<Emprunt> findByUserIdAndDocIdAndStatus(Long userId, Long docId, String status);
     
     List<Emprunt> findByUserIdAndStatus(Long userId, String status);
+    
+    
+    @Query("SELECT COUNT(e) > 0 " +
+    	       "FROM Emprunt e, Document d " +
+    	       "WHERE e.docId = d.docId " +
+    	       "  AND e.userId = :userId " +
+    	       "  AND e.status = 'Actif' " +
+    	       "  AND d.docType = :docType")
+    	boolean userHasActiveEmpruntOfType(@Param("userId") Long userId, 
+    	                                   @Param("docType") String docType);
+
     
 
 
