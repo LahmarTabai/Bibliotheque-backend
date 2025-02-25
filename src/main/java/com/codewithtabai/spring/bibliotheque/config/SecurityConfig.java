@@ -36,6 +36,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/api/utilisateurs/{id}").hasAnyRole("ADMIN", "USER")
                 // Ou tu peux affiner en rajoutant du @PreAuthorize dans le controller
                 
+             // *** Autoriser POST /api/utilisateurs/{id}/changePassword ***
+                .requestMatchers(HttpMethod.POST, "/api/utilisateurs/{id}/changePassword").hasAnyRole("ADMIN","USER")
+
                 // Les autres endpoints de /api/utilisateurs réservés à ADMIN
                 .requestMatchers("/api/utilisateurs/**").hasRole("ADMIN")
                 

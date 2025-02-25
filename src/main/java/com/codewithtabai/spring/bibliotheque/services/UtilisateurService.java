@@ -42,36 +42,16 @@ public class UtilisateurService {
         String hash = BCrypt.hashpw(motDePasseClair, BCrypt.gensalt());
         user.setPassword(hash);
 
-        // Marquer qu'il a déjà changé son mot de passe (= true)
-        // si tu veux qu'il *n'*ait *pas* à le changer à la première connexion
-        user.setPasswordChanged(true);
+        // user.setPasswordChanged(false) => signifie qu'il doit changer son MDP à la première connexion
+        user.setPasswordChanged(false);
 
         return utilisateurRepository.save(user);
     }
 
 
-    /**
-     * Authentifier un utilisateur : vérifie si l'email existe,
-     * compare le mot de passe en clair avec le hash stocké.
-     * @param email email de l'utilisateur
-     * @param motDePasseEnClair mot de passe en clair
-     * @return l'objet Utilisateur si OK, sinon null
-     */
-//    public Utilisateur authentifier(String email, String motDePasseEnClair) {
-//        Utilisateur user = utilisateurRepository.findByUserEmail(email);
-//        if (user == null) {
-//            return null; // aucun user avec cet email
-//        }
-//
-//        // Vérifier le hash
-//        String hashEnBase = user.getPassword();
-//        boolean match = BCrypt.checkpw(motDePasseEnClair, hashEnBase);
-//        if (!match) {
-//            return null; // mot de passe incorrect
-//        }
-//
-//        return user; // authentification OK
-//    }
+
+
+    
 
     /**
      * Modifier un utilisateur. 

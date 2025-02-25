@@ -11,10 +11,7 @@ import com.codewithtabai.spring.bibliotheque.services.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-
-
-
-
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -46,7 +43,7 @@ public class UtilisateurController {
 
     // POST /api/utilisateurs
     @PostMapping
-    public Utilisateur ajouterUtilisateur(@RequestBody Utilisateur user) {
+    public Utilisateur ajouterUtilisateur(@RequestBody Utilisateur user, Principal principal) {
         return utilisateurService.ajouterUtilisateur(user);
     }
 
