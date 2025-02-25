@@ -34,18 +34,21 @@ public class UtilisateurService {
             throw new RuntimeException("Email déjà utilisé");
         }
 
+        // Forcer le rôle à "USER"
+        user.setRole("USER");
+
         // Hacher le mot de passe avant de l'enregistrer
         String motDePasseClair = user.getPassword();
         String hash = BCrypt.hashpw(motDePasseClair, BCrypt.gensalt());
         user.setPassword(hash);
 
-        // Marquer qu'il n'a pas encore (ou pas) changé son mot de passe, si nécessaire
-        if (user.getPasswordChanged() == null) {
-            user.setPasswordChanged(false);
-        }
+        // Marquer qu'il a déjà changé son mot de passe (= true)
+        // si tu veux qu'il *n'*ait *pas* à le changer à la première connexion
+        user.setPasswordChanged(true);
 
         return utilisateurRepository.save(user);
     }
+
 
     /**
      * Authentifier un utilisateur : vérifie si l'email existe,
