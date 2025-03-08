@@ -34,6 +34,10 @@ public class SecurityConfig {
 
                 // Autoriser un USER à modifier son propre compte, etc. => au choix
                 .requestMatchers(HttpMethod.PUT, "/api/utilisateurs/{id}").hasAnyRole("ADMIN", "USER")
+//                .requestMatchers(HttpMethod.GET, "/api/utilisateurs/{id}").hasRole("USER")
+                .requestMatchers(HttpMethod.GET, "/api/utilisateurs/{id}").authenticated()
+
+                
                 // Ou tu peux affiner en rajoutant du @PreAuthorize dans le controller
                 
              // *** Autoriser POST /api/utilisateurs/{id}/changePassword ***
